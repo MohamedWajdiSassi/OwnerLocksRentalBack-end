@@ -103,81 +103,53 @@ public class DeviceInfoController {
 //
 //
 //        );
-        List<DeviceInfo> deviceInfos = new ArrayList<>();
-        for (Integer i = 0; i < array.length(); i++) {
-            JSONObject firstObject = new JSONObject( array.getJSONObject(i).get("Device").toString());
-            DeviceInfo  deviceInfo = new DeviceInfo();
-            deviceInfo.setIdDevice(firstObject.get("idDevice").toString());
-
-            deviceInfo.setTitle(firstObject.get("title").toString());
-            deviceInfo.setLocation(firstObject.get("location").toString());
-            deviceInfo.setDeviceCategory(firstObject.get("deviceCategory").toString());
-            deviceInfo.setDescription(firstObject.get("description").toString());
-            deviceInfo.setImage(firstObject.get("image").toString());
-            deviceInfo.setPrice(Integer.getInteger( firstObject.getString("price")));
-            deviceInfo.setNumBedRooms(Integer.parseInt(firstObject.getString("numBedRooms")));
-            deviceInfo.setNumPerson(Integer.parseInt(firstObject.getString("numPerson")));
-            deviceInfo.setColor(firstObject.get("color").toString());
-            deviceInfo.setModel(firstObject.get("model").toString());
-
-
-
-
-//            JSONObject secondObject = new JSONObject(array.getJSONObject(i).get("History").toString() );
-
+//        List<DeviceInfo> deviceInfos = new ArrayList<>();
+//        for (Integer i = 0; i < array.length(); i++) {
+//            JSONObject firstObject = new JSONObject( array.getJSONObject(i).get("Device").toString());
+//            DeviceInfo  deviceInfo = new DeviceInfo();
+//            deviceInfo.setIdDevice(firstObject.get("idDevice").toString());
 //
-//            UserHistory userHistory = new UserHistory();
-//            userHistory.setIdReservation(secondObject.get("idReservation").toString());
-//            userHistory.setPickUpDate(secondObject.get("pickUpDate").toString());
-//            userHistory.setReturnDate(secondObject.get("returnDate").toString());
+//            deviceInfo.setTitle(firstObject.get("title").toString());
+//            deviceInfo.setLocation(firstObject.get("location").toString());
+//            deviceInfo.setDeviceCategory(firstObject.get("deviceCategory").toString());
+//            deviceInfo.setDescription(firstObject.get("description").toString());
+//            deviceInfo.setImage(firstObject.get("image").toString());
+//            deviceInfo.setPrice(Integer.getInteger( firstObject.getString("price")));
+//            deviceInfo.setNumBedRooms(Integer.parseInt(firstObject.getString("numBedRooms")));
+//            deviceInfo.setNumPerson(Integer.parseInt(firstObject.getString("numPerson")));
+//            deviceInfo.setColor(firstObject.get("color").toString());
+//            deviceInfo.setModel(firstObject.get("model").toString());
 //
 //
+//            deviceInfos.add(deviceInfo);
 //
-            deviceInfos.add(deviceInfo);
-//
-//
-//
-        }
-
-//        System.out.println(new String(result));
-//
-//        StringBuilder jsonStrings = new StringBuilder();
-//        for (byte b: result) {
-//            jsonString.append((char) b);
 //        }
-//        JSONObject object = new JSONObject(jsonString.toString());
-//        JSONArray arrays = new JSONArray(jsonString.toString());
-//        System.out.println(new String(result));
+
         List<Device> devices = new ArrayList<>();
 
         for (Integer i = 0; i < array.length(); i++) {
-            JSONObject firstObject = new JSONObject(array.getJSONObject(i).get("Device").toString());
+            JSONObject firstObjects = new JSONObject(array.getJSONObject(i).get("Device").toString());
             Device device = new Device();
-            device.setIdDevice(firstObject.get("idDevice").toString());
-
-            device.setTitle(firstObject.get("title").toString());
-            device.setLocation(firstObject.get("location").toString());
-            device.setDeviceCategory(firstObject.get("deviceCategory").toString());
-            device.setDescription(firstObject.get("description").toString());
-            device.setImage(firstObject.get("image").toString());
-            device.setPrice(firstObject.getString("price"));
-            device.setNumBedRooms(firstObject.getString("numBedRooms"));
-            device.setNumPerson(firstObject.getString("numPerson"));
-            device.setColor(firstObject.get("color").toString());
-            device.setModel(firstObject.get("model").toString());
-//            device.setHistoryList();
-//            JSONObject secondObject = new JSONObject(array.getJSONObject(i).get("history").toString());
-//            History history = new History();
-//            history.setIdReservation(secondObject.get("idReservation").toString());
-//            history.setPickUpDate(secondObject.get("pickUpDate").toString());
-//            history.setReturnDate(secondObject.get("returnDate").toString());
+            device.setIdDevice(firstObjects.get("idDevice").toString());
+            device.setTitle(firstObjects.get("title").toString());
+            device.setLocation(firstObjects.get("location").toString());
+            device.setDeviceCategory(firstObjects.get("deviceCategory").toString());
+            device.setDescription(firstObjects.get("description").toString());
+            device.setImage(firstObjects.get("image").toString());
+            device.setPrice(firstObjects.getString("price"));
+            device.setNumBedRooms(firstObjects.getString("numBedRooms"));
+            device.setNumPerson(firstObjects.getString("numPerson"));
+            device.setColor(firstObjects.get("color").toString());
+            device.setModel(firstObjects.get("model").toString());
 
             HistoryDtoService list = new HistoryDtoService();
 
 
 
 
-            device.setHistoryList(list.allHistoryList());
+
+
+            device.setHistoryList(list.allHistoryList(channel,device.getIdDevice()));
 
 
 
@@ -209,6 +181,32 @@ public class DeviceInfoController {
     @RequestMapping(value = "oneDevice/{channel}/{idDevice}", method = RequestMethod.GET)
     public ResponseEntity<?> findById(@PathVariable(name="idDevice") String idDevice,@PathVariable String channel,DeviceInfo deviceInfo) throws Exception {
         byte[] result  = clientAppService.getDevices(deviceInfo,channel);
-        return ResponseEntity.status(200).body(result);
+
+        StringBuilder jsonString = new StringBuilder();
+        for (byte b: result) {
+            jsonString.append((char) b);
+        }
+        JSONObject object = new JSONObject(jsonString.toString());
+        HistoryDtoService list = new HistoryDtoService();
+        Device device = new Device( object.getString("idDevice")
+                ,object.getString("title")
+                ,object.getString("location")
+                ,object.getString("deviceCategory")
+                ,object.getString("description")
+                ,object.getString("image")
+                ,object.getString("price")
+                ,object.getString("numBedRooms")
+                ,object.getString("numPerson")
+                ,object.getString("color")
+                ,object.getString("model")
+                , list.allHistoryList(channel , object.getString("idDevice"))
+                );
+
+
+
+
+
+
+        return ResponseEntity.status(200).body(device);
     }
 }

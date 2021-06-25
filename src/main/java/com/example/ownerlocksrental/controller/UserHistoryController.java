@@ -91,10 +91,10 @@ public class UserHistoryController {
             userHistory.setPickUpDate(secondObject.get("pickUpDate").toString());
             userHistory.setReturnDate(secondObject.get("returnDate").toString());
             userHistory.setIdDevice(secondObject.get("idDevice").toString());
-            History history = new History();
-            history.setIdReservation(secondObject.get("idReservation").toString());
-            history.setPickUpDate(secondObject.get("pickUpDate").toString());
-            history.setReturnDate(secondObject.get("returnDate").toString());
+                History history = new History();
+                history.setIdReservation(secondObject.get("idReservation").toString());
+                history.setPickUpDate(secondObject.get("pickUpDate").toString());
+                history.setReturnDate(secondObject.get("returnDate").toString());
 
 
 //            device.setIdReservation(secondObject.get("idReservation").toString());
@@ -102,32 +102,6 @@ public class UserHistoryController {
 //            device.setReturnDate(secondObject.get(""returnDate).toString());
 
             histories.add(userHistory);
-
-        }
-        StringBuilder jsonsString = new StringBuilder();
-        for (byte b: result) {
-            jsonsString.append((char) b);
-        }
-        List<History> his = new ArrayList<>();
-
-        for (Integer i = 0; i < array.length(); i++) {
-
-
-            JSONObject secondObject = new JSONObject(array.getJSONObject(i).get("history").toString());
-            History history = new History();
-            history.setIdReservation(secondObject.get("idReservation").toString());
-            history.setPickUpDate(secondObject.get("pickUpDate").toString());
-            history.setReturnDate(secondObject.get("returnDate").toString());
-
-            HistoryDtoService list = new HistoryDtoService();
-
-
-
-
-
-
-            his.add(history);
-
 
         }
 

@@ -231,31 +231,8 @@ public class ClientAppService {
     public byte[] getAllHistory (String channel, String deviceInfo ) throws Exception {
         Contract contract = this.contract(channel);
         byte[] result;
-        //DeviceInfo deviceInfo = new DeviceInfo();
-
         result = contract.evaluateTransaction("QueryAllHistory", deviceInfo);
-        log.info("All History : %s",new String(result));
-        StringBuilder jsonString = new StringBuilder();
-        for (byte b: result) {
-            jsonString.append((char) b);
-        }
-        //JSONObject object = new JSONObject(jsonString.toString());
-        JSONArray array = new JSONArray(jsonString.toString());
-        //System.out.println(new String(result));
-        List<History> histories = new ArrayList<>();
-
-        for (Integer i = 0; i < array.length(); i++) {
-            JSONObject secondObject = new JSONObject(array.getJSONObject(i).get("History").toString() );
-            History history = new History();
-            history.setIdReservation(secondObject.get("idReservation").toString());
-            history.setPickUpDate(secondObject.get("pickUpDate").toString());
-            history.setReturnDate(secondObject.get("returnDate").toString());
-
-        }
-
-
-
-
+        System.out.println(new String (result));
         return result ;
     }
     public byte[] getHistory ( UserHistory history, String channel ) throws Exception {
