@@ -1,5 +1,6 @@
 package com.example.ownerlocksrental.controller;
 
+import com.example.ownerlocksrental.entities.DeviceInfo;
 import com.example.ownerlocksrental.entities.Owner;
 import com.example.ownerlocksrental.service.IOwnerService;
 import com.example.ownerlocksrental.service.Implement.RegisterUserService;
@@ -15,6 +16,7 @@ import java.util.Optional;
 
 @Controller
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("owner")
 public class OwnerController  {
     @Autowired
@@ -23,7 +25,6 @@ public class OwnerController  {
     private RegisterUserService registerUserService;
 
     @PostMapping("createOwner")
-
     public Owner saveOwner(@RequestBody Owner owner)  {
 
         owner.setIdUser(ObjectId.get().toString());
@@ -48,6 +49,7 @@ public class OwnerController  {
     public ResponseEntity<?> updateOwner(@PathVariable("idOwner") String idOwner , @RequestBody Owner owner) {
         owner.setIdUser(idOwner);
          ownerService.saveOwner(owner);
+
         return ResponseEntity.status(200).body("saved");
     }
 

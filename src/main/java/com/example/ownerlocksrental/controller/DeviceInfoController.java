@@ -22,6 +22,7 @@ import java.util.List;
 
 @Controller
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("deviceInfo")
 public class DeviceInfoController {
 
@@ -41,6 +42,7 @@ public class DeviceInfoController {
         Owner owner = ownerService.findOwnerById(idOwner);
         deviceInfo.setIdDevice(ObjectId.get().toString());
         DeviceInfo d =deviceInfoService.saveDevice(deviceInfo);
+        System.out.println(deviceInfo);
 
 
         d.setOwner(owner);

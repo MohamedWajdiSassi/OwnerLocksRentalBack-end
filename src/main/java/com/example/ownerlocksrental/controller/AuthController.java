@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/auth")
 public class AuthController {
     @Autowired
@@ -36,16 +37,17 @@ public class AuthController {
 
     @PostMapping("signIn")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody Owner owner) {
+        System.out.println("////////////////////////////////////////");
+        System.out.println(owner);
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(owner.getEmail(), owner.getPasswd()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         return ResponseEntity.ok(new JwtResponse(jwt,
-                userDetails.getId(),
+                owner.getIdUser(),
                 userDetails.getUsername(),
                 userDetails.getEmail()
-
                 ));
     }
 

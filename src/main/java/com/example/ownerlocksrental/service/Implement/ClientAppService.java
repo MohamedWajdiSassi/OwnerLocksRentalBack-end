@@ -92,19 +92,18 @@ public class ClientAppService {
         log.info("createDevice : %s",deviceInfo.toString());
 
 
-        contract.submitTransaction("CreateDevice"
-                ,deviceInfo.getIdDevice()
-                ,deviceInfo.getTitle()
-                ,deviceInfo.getLocation()
-                ,deviceInfo.getDeviceCategory()
-                ,deviceInfo.getDescription()
-                ,deviceInfo.getImage()
-                ,deviceInfo.getPrice().toString()
-                ,Integer.toString( deviceInfo.getNumBedRooms())
-                ,Integer.toString( deviceInfo.getNumPerson())
-                ,deviceInfo.getColor()
-                ,deviceInfo.getModel());
-
+        byte[] createDevices = contract.submitTransaction("CreateDevice"
+                , deviceInfo.getIdDevice()
+                , deviceInfo.getTitle()
+                , deviceInfo.getLocation()
+                , deviceInfo.getDeviceCategory()
+                , deviceInfo.getDescription()
+                , deviceInfo.getImage()
+                , Integer.toString(deviceInfo.getPrice())
+                , Integer.toString(deviceInfo.getNumBedRooms())
+                , Integer.toString(deviceInfo.getNumPerson())
+                , deviceInfo.getColor()
+                , deviceInfo.getModel());
 
 
     }
